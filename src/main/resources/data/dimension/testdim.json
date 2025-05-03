@@ -1,0 +1,6 @@
+{
+  "type": "hdm_mod:testdim",
+  "generator": {
+    "type": "minecraft:debug"
+  }
+}
