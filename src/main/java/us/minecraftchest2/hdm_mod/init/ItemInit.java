@@ -9,7 +9,7 @@ import us.minecraftchest2.hdm_mod.util.ModItemTier;
 
 public class ItemInit {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Hdm_mod.MOD_ID);
-    public static final RegistryObject<Item> KNIFE = ITEMS.register("knife", () -> new SwordItem(ModItemTier.MGTI, 3,-2.4f, new Item.Properties().tab(ModCreativeTab.Items)));
+    public static final RegistryObject<Item> KNIFE = ITEMS.register("knife", () -> new SwordItem(ModItemTier.MGTI, 3,-1f, new Item.Properties().tab(ModCreativeTab.Items)));
     public static final RegistryObject<Item> OMELET = ITEMS.register("omelet", () -> new Item(new Item.Properties().tab(ModCreativeTab.Items).food(new Food.Builder().nutrition(4).saturationMod(2).build())));
     public static final RegistryObject<Item> SPYGLASS = ITEMS.register("spyglass", () -> new Item(new Item.Properties().tab(ModCreativeTab.Items)));
 
