@@ -13,7 +13,7 @@ public class ModItems {
             DeferredRegister.create(ForgeRegistries.ITEMS, Hdm_mod.MOD_ID);
 
     public static final RegistryObject<Item> DUST = ITEMS.register("dust",
-            () -> new Item(new Item.Properties().isImmuneToFire().maxStackSize(63).group(ModItenGroup.HDM_ITEM_GROUP)));
+            () -> new Item(new Item.Properties().isImmuneToFire().maxStackSize(63).group(ModItemGroup.HDM_ITEM_GROUP)));
 
 //    public static final RegistryObject<Item> OMELET = ITEMS.register("omelet",
 //            () -> new Item(new Item.Properties().food()))

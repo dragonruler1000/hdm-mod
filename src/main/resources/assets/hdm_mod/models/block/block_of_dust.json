@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures" : {
+    "all": "hdm_mod:block/block_of_dust"
+  }
+}
