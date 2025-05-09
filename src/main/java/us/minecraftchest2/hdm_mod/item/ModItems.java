@@ -1,7 +1,6 @@
 package us.minecraftchest2.hdm_mod.item;
 
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -14,7 +13,10 @@ public class ModItems {
             DeferredRegister.create(ForgeRegistries.ITEMS, Hdm_mod.MOD_ID);
 
     public static final RegistryObject<Item> DUST = ITEMS.register("dust",
-            () -> new Item(new Item.Properties().isImmuneToFire().maxStackSize(65).group(ItemGroup.MATERIALS)));
+            () -> new Item(new Item.Properties().isImmuneToFire().maxStackSize(63).group(ModItenGroup.HDM_ITEM_GROUP)));
+
+//    public static final RegistryObject<Item> OMELET = ITEMS.register("omelet",
+//            () -> new Item(new Item.Properties().food()))
 
 
 
