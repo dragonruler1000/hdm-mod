@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "hdm_mod:dust"
+    }
+  },
+  "result": {
+    "item": "hdm_mod:block_of_dust"
+  }
+}

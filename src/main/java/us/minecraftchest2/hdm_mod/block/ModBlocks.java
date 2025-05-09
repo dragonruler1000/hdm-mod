@@ -5,7 +5,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraftforge.common.ToolType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -22,7 +21,7 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> DUST_BLOCK = registerBlock("block_of_dust",
             () -> new Block(AbstractBlock.Properties.create(Material.ROCK).doesNotBlockMovement().harvestLevel(0)
-                    .harvestTool(ToolType.PICKAXE).setRequiresTool().hardnessAndResistance(5f)));
+                    .hardnessAndResistance(5f)));
 
 
     private static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block) {
