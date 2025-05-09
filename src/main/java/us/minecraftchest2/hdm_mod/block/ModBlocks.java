@@ -20,15 +20,15 @@ public class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Hdm_mod.MOD_ID);
 
 
-    public static final RegistryObject<Block> DUST_BLOCK = registerBlcok("block_of_dust",
+    public static final RegistryObject<Block> DUST_BLOCK = registerBlock("block_of_dust",
             () -> new Block(AbstractBlock.Properties.create(Material.ROCK).doesNotBlockMovement().harvestLevel(0)
                     .harvestTool(ToolType.PICKAXE).setRequiresTool().hardnessAndResistance(5f)));
 
 
-    private static <T extends Block>RegistryObject<T> registerBlcok(String name, Supplier<T> block) {
-      RegistryObject<T> toReturn = BLOCKS.register(name, block);
-
-      return toReturn;
+    private static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block) {
+        RegistryObject<T> toReturn = BLOCKS.register(name, block);
+        registerBlockItem(name, toReturn);
+        return toReturn;
     }
 
     private static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block) {
