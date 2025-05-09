@@ -7,6 +7,6 @@ import net.minecraft.world.World;
 import us.minecraftchest2.hdm_mod.Hdm_mod;
 
 public class ModDimensions {
-    public static RegistryKey<World> TestDim = RegistryKey.createRegistryKey(Registry.WORLD_KEY,
+    public static RegistryKey<World> TestDim = RegistryKey.getOrCreateKey(Registry.WORLD_KEY,
             new ResourceLocation(Hdm_mod.MOD_ID, "testdim"));
 }

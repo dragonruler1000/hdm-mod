@@ -16,7 +16,8 @@ import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import us.minecraftchest2.hdm_mod.init.ItemInit;
+import us.minecraftchest2.hdm_mod.item.ModItems;
+//import us.minecraftchest2.hdm_mod.init.ItemInit;
 
 import java.util.stream.Collectors;
 
@@ -30,20 +31,24 @@ public class Hdm_mod {
 
     public Hdm_mod() {
         // Register the setup method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        IEventBus modEventBus1 = FMLJavaModLoadingContext.get().getModEventBus();
+
+        ModItems.register(modEventBus1);
+
+        modEventBus1.addListener(this::setup);
         // Register the enqueueIMC method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
+        modEventBus1.addListener(this::enqueueIMC);
         // Register the processIMC method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
+        modEventBus1.addListener(this::processIMC);
         // Register the doClientStuff method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
+        modEventBus1.addListener(this::doClientStuff);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
-        final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        final IEventBus modEventBus = modEventBus1;
 
         modEventBus.addListener(this::setup);
-        ItemInit.ITEMS.register(modEventBus);
+        //ItemInit.ITEMS.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
     }
