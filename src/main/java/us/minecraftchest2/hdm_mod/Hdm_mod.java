@@ -16,6 +16,7 @@ import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import us.minecraftchest2.hdm_mod.block.ModBlocks;
 import us.minecraftchest2.hdm_mod.item.ModItems;
 //import us.minecraftchest2.hdm_mod.init.ItemInit;
 
@@ -34,6 +35,7 @@ public class Hdm_mod {
         IEventBus modEventBus1 = FMLJavaModLoadingContext.get().getModEventBus();
 
         ModItems.register(modEventBus1);
+        ModBlocks.register(modEventBus1);
 
         modEventBus1.addListener(this::setup);
         // Register the enqueueIMC method for modloading

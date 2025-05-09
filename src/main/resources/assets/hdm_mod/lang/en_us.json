@@ -1,7 +1,9 @@
 {
-  "itemGroup.hdm_mod": "HDM Mod Items",
+  "itemGroup.hdmModItemTab": "HDM Mod Items",
+  "itemGroup.hdmModBlockTab": "HDM Mod Blocks",
 
   "item.hdm_mod.knife": "Subtle Knife",
   "item.hdm_mod.omelet": "Omelet",
-  "item.hdm_mod.dust": "Dust"
+  "item.hdm_mod.dust": "Dust",
+  "block.hdm_mod.block_of_dust": "Block of Dust"
 }
