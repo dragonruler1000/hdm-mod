@@ -1,6 +1,5 @@
 package us.minecraftchest2.hdm_mod.item;
 
-import net.minecraft.item.Food;
 import net.minecraft.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
