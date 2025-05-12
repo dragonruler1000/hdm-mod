@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "hdm_mod:block_of_dust"
+    }
+  ],
+  "result": {
+    "item": "hdm_mod:dust"
+  }
+}

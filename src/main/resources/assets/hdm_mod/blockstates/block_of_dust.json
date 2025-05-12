@@ -1,5 +1,5 @@
 {
   "variants": {
-    "": {"model":  "hdm_mod:blocks/block_of_dust" }
+    "": {"model":  "hdm_mod:block/block_of_dust" }
   }
 }
