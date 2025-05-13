@@ -7,6 +7,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.ScoreTextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 
 
@@ -23,9 +26,13 @@ public class SubtleKnife extends Item {
 //        BlockPos pos =
         PlayerEntity player = context.getPlayer();
 
-        if(world.isRemote) {
-//            world.setBlockState()
-        }
+        String message = "Item Used";
+        ITextComponent msg = new StringTextComponent(message);
+        assert player != null;
+        player.sendMessage(msg, player.getUniqueID());
+//        if(world.isRemote) {
+//
+//        }
         return super.onItemUseFirst(stack, context);
     }
 
