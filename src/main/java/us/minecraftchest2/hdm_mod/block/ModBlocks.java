@@ -19,12 +19,17 @@ import java.util.function.ToIntFunction;
 
 public class ModBlocks {
     public static ToIntFunction<BlockState> dustLightLevel = BlockState -> 10; // Dust Light Level
+    public static ToIntFunction<BlockState> PORTAL_LIGHT_LEVEL = BlockState ->15;
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Hdm_mod.MOD_ID);
 
 
     public static final RegistryObject<Block> DUST_BLOCK = registerBlock("block_of_dust",
             () -> new Block(AbstractBlock.Properties.create(Material.ROCK).doesNotBlockMovement().harvestLevel(0)
                     .hardnessAndResistance(500f, 100f).setLightLevel(dustLightLevel)));
+
+    public static final RegistryObject<Block> PORTAL_BLOCK = registerBlock("window",
+            () -> new Block(AbstractBlock.Properties.create(Material.PORTAL).doesNotBlockMovement().harvestLevel(10)
+                    .hardnessAndResistance(1000f, 1000f).setLightLevel(PORTAL_LIGHT_LEVEL)));
 
 
     private static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block) {
