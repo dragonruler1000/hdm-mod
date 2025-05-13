@@ -18,8 +18,7 @@ import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
 public class ModBlocks {
-    // Dust Light Level
-    public static ToIntFunction<BlockState> dustLightLevel = BlockState -> 10;
+    public static ToIntFunction<BlockState> dustLightLevel = BlockState -> 10; // Dust Light Level
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Hdm_mod.MOD_ID);
 
 

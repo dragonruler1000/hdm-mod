@@ -23,13 +23,14 @@ public class SubtleKnife extends Item {
     @Override
     public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context) {
         World world = context.getWorld();
-//        BlockPos pos =
+//        BlockPos pos =;
         PlayerEntity player = context.getPlayer();
 
         String message = "Item Used";
         ITextComponent msg = new StringTextComponent(message);
         assert player != null;
         player.sendMessage(msg, player.getUniqueID());
+//        world.setBlockState(pos);
 //        if(world.isRemote) {
 //
 //        }

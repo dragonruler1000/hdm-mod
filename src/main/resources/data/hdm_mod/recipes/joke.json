@@ -1,0 +1,9 @@
+{
+    "type": "minecraft:smoking",
+    "ingredient": {
+        "item": "hdm_mod:block_of_dust"
+    },
+    "result": "minecraft:red_wool",
+    "experience": 10000000,
+    "cookingtime": 200
+}
