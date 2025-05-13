@@ -54,6 +54,9 @@ Explore parallel worlds, bond with your daemon, uncover the mysteries of Dust, a
 3. Launch Minecraft with the Forge profile.
 
 ---
+## Wiki
+https://github.com/dragonruler1000/hdm-mod/wiki
+---
 
 ## Contributing
 
