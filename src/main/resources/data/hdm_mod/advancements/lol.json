@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "hdm_mod:dust"
+    },
+    "title": "lol",
+    "description": "lol",
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true,
+    "background": "hdm_mod:textures/block/block_of_dust.png"
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "hdm_mod:joke"
+      }
+    }
+  },
+  "requirements": []
+}
