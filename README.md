@@ -6,7 +6,7 @@ Explore parallel worlds, bond with your daemon, uncover the mysteries of Dust, a
 
 ---
 ![](https://hackatime-badge.hackclub.com/U07ATTVPPHA/HDM-mod)  
-![Hackatime Stats](https://github-readme-stats.hackclub.dev/api/wakatime?username=1111&api_domain=hackatime.hackclub.com&theme=dark&custom_title=Hackatime+Stats&layout=compact&cache_seconds=0&langs_count=8)
+![Hackatime Stats](https://github-readme-stats.hackclub.dev/api/wakatime?username=1111&api_domain=hackatime.hackclub.com&theme=shadow_green&custom_title=Hackatime+Stats&layout=compact&cache_seconds=0&langs_count=8)
 </br><img src="https://profile-counter.glitch.me/Dragonruler1000-hdm_mod/count.svg" alt="Visitor Counter"/>
 ---
 
