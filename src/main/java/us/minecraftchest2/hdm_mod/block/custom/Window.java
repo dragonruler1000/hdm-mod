@@ -15,6 +15,7 @@ import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -81,24 +82,34 @@ public class Window extends HorizontalBlock {
                 MinecraftServer server = worldIn.getServer();
 
                 if (server != null) {
-                    if (worldIn.getDimensionKey() == ModDimensions.World1) {
-                        ServerWorld overWorld = server.getWorld(World.OVERWORLD);
-                        if (overWorld != null) {
-                            player.changeDimension(overWorld, new SimpleTeleporter(pos, false));
-                        }
+                    ServerWorld targetWorld;
+                    boolean goingToCustom = worldIn.getDimensionKey() != ModDimensions.World1;
+
+                    if (goingToCustom) {
+                        targetWorld = server.getWorld(ModDimensions.World1);
                     } else {
-                        ServerWorld kjDim = server.getWorld(ModDimensions.World1);
-                        if (kjDim != null) {
-                            player.changeDimension(kjDim, new SimpleTeleporter(pos, true));
-                        }
+                        targetWorld = server.getWorld(World.OVERWORLD);
                     }
-                    return ActionResultType.SUCCESS;
+
+                    if (targetWorld != null) {
+                        SimpleTeleporter teleporter = new SimpleTeleporter(pos, goingToCustom);
+                        player.changeDimension(targetWorld, teleporter);
+
+                        if (teleporter.wasSuccessful()) {
+                            player.sendMessage(new StringTextComponent("Teleportation successful!"), player.getUniqueID());
+                        } else {
+                            player.sendMessage(new StringTextComponent("Teleportation failed: no safe location found."), player.getUniqueID());
+                        }
+
+                        return ActionResultType.SUCCESS;
+                    }
                 }
             }
         }
 
         return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
     }
+
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {

@@ -17,6 +17,12 @@ public class SimpleTeleporter implements ITeleporter {
     public static BlockPos thisPos = BlockPos.ZERO;
     public static boolean insideDimension = true;
 
+    private boolean success = false;
+
+    public boolean wasSuccessful() {
+        return success;
+    }
+
     public SimpleTeleporter(BlockPos pos, boolean insideDim) {
         thisPos = pos;
         insideDimension = insideDim;
@@ -50,7 +56,13 @@ public class SimpleTeleporter implements ITeleporter {
             tries++;
         }
 
+        if (tries >= 25) {
+            this.success = false;
+            return entity;
+        }
+
         entity.setPositionAndUpdate(destinationPos.getX(), destinationPos.getY(), destinationPos.getZ());
+        this.success = true;
 
         if (insideDimension) {
             boolean doSetBlock = true;
