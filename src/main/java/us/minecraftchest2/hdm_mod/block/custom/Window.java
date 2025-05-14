@@ -81,13 +81,13 @@ public class Window extends HorizontalBlock {
                 MinecraftServer server = worldIn.getServer();
 
                 if (server != null) {
-                    if (worldIn.getDimensionKey() == ModDimensions.TestDim) {
+                    if (worldIn.getDimensionKey() == ModDimensions.World1) {
                         ServerWorld overWorld = server.getWorld(World.OVERWORLD);
                         if (overWorld != null) {
                             player.changeDimension(overWorld, new SimpleTeleporter(pos, false));
                         }
                     } else {
-                        ServerWorld kjDim = server.getWorld(ModDimensions.TestDim);
+                        ServerWorld kjDim = server.getWorld(ModDimensions.World1);
                         if (kjDim != null) {
                             player.changeDimension(kjDim, new SimpleTeleporter(pos, true));
                         }
@@ -126,4 +126,6 @@ public class Window extends HorizontalBlock {
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         return this.getDefaultState().with(HORIZONTAL_FACING, context.getPlacementHorizontalFacing().getOpposite());
     }
+
 }
+
