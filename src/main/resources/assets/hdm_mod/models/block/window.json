@@ -1,9 +1,9 @@
 {
   "credit": "Made with Blockbench",
   "textures": {
-    "1": "tutorialmod:block/brown",
-    "2": "tutorialmod:block/grey",
-    "particle": "tutorialmod:block/red"
+    "1": "hdm_mod:block/brown",
+    "2": "hdm_mod:block/grey",
+    "particle": "hdm_mod:block/red"
   },
   "elements": [
     {
