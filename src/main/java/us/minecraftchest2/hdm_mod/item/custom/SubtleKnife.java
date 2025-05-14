@@ -16,6 +16,7 @@ import net.minecraft.util.text.ScoreTextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
+import us.minecraftchest2.hdm_mod.block.ModBlocks;
 
 
 public class SubtleKnife extends Item {
@@ -41,7 +42,7 @@ public class SubtleKnife extends Item {
 
         // Server-side logic only: place a block
         if (!world.isRemote) {
-            world.setBlockState(placePos, Blocks.STONE.getDefaultState()); // Change to your portal block later
+            world.setBlockState(placePos, ModBlocks.PORTAL_BLOCK.get().getDefaultState());
         }
 
         return ActionResultType.SUCCESS;

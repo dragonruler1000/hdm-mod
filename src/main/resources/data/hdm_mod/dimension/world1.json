@@ -1,0 +1,13 @@
+{
+  "type": "hdm_mod:world1",
+  "generator": {
+    "biome_source": {
+      "seed": 0,
+      "large_biomes": false,
+      "type": "minecraft:vanilla_layered"
+    },
+    "seed": 3858032342400257,
+    "settings": "hdm_mod:world1",
+    "type": "minecraft:noise"
+  }
+}

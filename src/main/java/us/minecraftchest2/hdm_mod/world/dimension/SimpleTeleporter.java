@@ -1,5 +1,6 @@
 package us.minecraftchest2.hdm_mod.world.dimension;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.fluid.Fluids;
@@ -21,6 +22,16 @@ public class SimpleTeleporter implements ITeleporter {
         insideDimension = insideDim;
     }
 
+    private boolean isUnsafe(ServerWorld world, BlockPos pos){
+        BlockState state = world.getBlockState(pos);
+        Material material = state.getMaterial();
+        return material != Material.AIR &&
+                !state.isReplaceable(Fluids.WATER) &&
+                !material.isReplaceable() ||
+                material == Material.LAVA ||
+                material == Material.FIRE;
+    }
+
     @Override
     public Entity placeEntity(Entity entity, ServerWorld currentWorld, ServerWorld destinationWorld,
                               float yaw, Function<Boolean, Entity> repositionEntity) {
@@ -33,23 +44,8 @@ public class SimpleTeleporter implements ITeleporter {
 
         BlockPos destinationPos = new BlockPos(thisPos.getX(), y, thisPos.getZ());
 
-
         int tries = 0;
-        while (
-                (
-                        destinationWorld.getBlockState(destinationPos).getMaterial() != Material.AIR &&
-                                !destinationWorld.getBlockState(destinationPos).isReplaceable(Fluids.WATER) &&
-                                !destinationWorld.getBlockState(destinationPos).getMaterial().isReplaceable() ||
-                                destinationWorld.getBlockState(destinationPos).getMaterial() == Material.LAVA ||
-//                                destinationWorld.getBlockState(destinationPos).getBlock().isFire(destinationWorld, destinationPos, null) ||
-                                destinationWorld.getBlockState(destinationPos.up()).getMaterial() != Material.AIR &&
-                                        !destinationWorld.getBlockState(destinationPos.up()).isReplaceable(Fluids.WATER) &&
-                                        !destinationWorld.getBlockState(destinationPos.up()).getMaterial().isReplaceable() ||
-                                destinationWorld.getBlockState(destinationPos.up()).getMaterial() == Material.LAVA
-//                                destinationWorld.getBlockState(destinationPos.up()).getBlock().isFire(destinationWorld, destinationPos.up(), null)
-                ) && tries < 25
-        )
-        {
+        while ((isUnsafe(destinationWorld, destinationPos) || isUnsafe(destinationWorld, destinationPos.up())) && tries < 25) {
             destinationPos = destinationPos.up(2);
             tries++;
         }
