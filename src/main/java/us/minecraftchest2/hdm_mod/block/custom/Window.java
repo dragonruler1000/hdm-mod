@@ -5,6 +5,7 @@ package us.minecraftchest2.hdm_mod.block.custom;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.server.MinecraftServer;
@@ -17,6 +18,7 @@ import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
@@ -98,18 +100,51 @@ public class Window extends HorizontalBlock {
      * @return Result of the interaction
      */
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos,
-                                         PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-    // Debug: Show a message regardless of side
-    if (worldIn.isRemote()) {
-        player.sendStatusMessage(new StringTextComponent("Client: Block activated!"), true);
-    } else {
-        player.sendMessage(new StringTextComponent("Server: Block activated!"), player.getUniqueID());
-    }
-    return ActionResultType.SUCCESS; // Consume the event for now
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        String message = "blockActivated";
+        ITextComponent msg = new StringTextComponent(message);
+        player.sendMessage(msg, player.getUniqueID());
+        if (!worldIn.isRemote()) return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
+        if (player.isCrouching()) return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
 
-    // ...Teleportation code after this, once this works...
-}
+
+        if (worldIn.getServer() == null) return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
+        MinecraftServer server = worldIn.getServer();
+        if (worldIn.getDimensionKey() == ModDimensions.World1) {
+            ServerWorld overWorld = server.getWorld(World.OVERWORLD);
+            if (overWorld != null) {
+                player.changeDimension(overWorld, new SimpleTeleporter(pos, false));
+            }
+        }
+        ServerWorld targetWorld;
+        boolean goingToCustom = worldIn.getDimensionKey() != ModDimensions.World1;
+
+        if (goingToCustom) {
+            targetWorld = server.getWorld(ModDimensions.World1);
+        } else {
+            ServerWorld world1 = server.getWorld(ModDimensions.World1);
+            if (world1 != null) {
+                player.changeDimension(world1, new SimpleTeleporter(pos, true));
+            }
+            targetWorld = server.getWorld(World.OVERWORLD);
+        }
+
+        if (targetWorld != null) {
+            SimpleTeleporter teleporter = new SimpleTeleporter(pos, goingToCustom);
+            player.changeDimension(targetWorld, teleporter);
+
+            if (teleporter.wasSuccessful()) {
+                player.sendMessage(new StringTextComponent("Teleportation successful!"), player.getUniqueID());
+            } else {
+                player.sendMessage(new StringTextComponent("Teleportation failed: no safe location found."), player.getUniqueID());
+            }
+
+            return ActionResultType.SUCCESS;
+        }
+
+        return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
+    }
+
 
     /**
      * Returns the appropriate shape for the block based on its facing direction
