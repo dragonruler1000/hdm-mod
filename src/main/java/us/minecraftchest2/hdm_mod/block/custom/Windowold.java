@@ -28,13 +28,12 @@ import javax.annotation.Nullable;
 import java.util.stream.Stream;
 
 
-
 /**
  * A custom window block that acts as a dimensional portal when activated
  * Extends HorizontalBlock to support directional placement
  */
-public class Window extends HorizontalBlock {
-    public Window(Properties builder) {
+public class Windowold extends HorizontalBlock {
+    public Windowold(Properties builder) {
         super(builder);
     }
 
@@ -99,17 +98,60 @@ public class Window extends HorizontalBlock {
      */
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos,
-                                         PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-    // Debug: Show a message regardless of side
-    if (worldIn.isRemote()) {
-        player.sendStatusMessage(new StringTextComponent("Client: Block activated!"), true);
-    } else {
-        player.sendMessage(new StringTextComponent("Server: Block activated!"), player.getUniqueID());
-    }
-    return ActionResultType.SUCCESS; // Consume the event for now
+                                             PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        // Send feedback message to player
+        player.sendMessage(new StringTextComponent("Block activated"), player.getUniqueID());
 
-    // ...Teleportation code after this, once this works...
-}
+        // Only process on server side
+        if (!worldIn.isRemote()) {
+            // Check if player is not sneaking
+            if (!player.isCrouching()) {
+                MinecraftServer server = worldIn.getServer();
+
+                if (server != null) {
+                    // Handle teleportation from custom dimension back to overworld
+                    if (worldIn.getDimensionKey() == ModDimensions.World1) {
+                        ServerWorld overWorld = server.getWorld(World.OVERWORLD);
+                        if (overWorld != null) {
+                            player.changeDimension(overWorld, new SimpleTeleporter(pos, false));
+                        }
+                    }
+
+                    // Determine target dimension and teleportation direction
+                    ServerWorld targetWorld;
+                    boolean goingToCustom = worldIn.getDimensionKey() != ModDimensions.World1;
+
+                    // Set up teleportation target based on current dimension
+                    if (goingToCustom) {
+                        targetWorld = server.getWorld(ModDimensions.World1);
+                    } else {
+                        ServerWorld world1 = server.getWorld(ModDimensions.World1);
+                        if (world1 != null) {
+                            player.changeDimension(world1, new SimpleTeleporter(pos, true));
+                        }
+                        targetWorld = server.getWorld(World.OVERWORLD);
+                    }
+
+                    // Attempt teleportation and send feedback to player
+                    if (targetWorld != null) {
+                        SimpleTeleporter teleporter = new SimpleTeleporter(pos, goingToCustom);
+                        player.changeDimension(targetWorld, teleporter);
+
+                        // Send success/failure message based on teleportation result
+                        if (teleporter.wasSuccessful()) {
+                            player.sendMessage(new StringTextComponent("Teleportation successful!"), player.getUniqueID());
+                        } else {
+                            player.sendMessage(new StringTextComponent("Teleportation failed: no safe location found."), player.getUniqueID());
+                        }
+
+                        return ActionResultType.SUCCESS;
+                    }
+                }
+            }
+        }
+
+        return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
+    }
 
     /**
      * Returns the appropriate shape for the block based on its facing direction
