@@ -104,6 +104,7 @@ public class Window extends HorizontalBlock {
         String message = "blockActivated";
         ITextComponent msg = new StringTextComponent(message);
         player.sendMessage(msg, player.getUniqueID());
+        player.sendStatusMessage(new StringTextComponent("Client: Block activated!"), true);
         if (!worldIn.isRemote()) return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
         if (player.isCrouching()) return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
 
