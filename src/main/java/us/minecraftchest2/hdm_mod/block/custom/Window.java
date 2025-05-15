@@ -82,12 +82,22 @@ public class Window extends HorizontalBlock {
                 MinecraftServer server = worldIn.getServer();
 
                 if (server != null) {
+                    if (worldIn.getDimensionKey() == ModDimensions.World1) {
+                        ServerWorld overWorld = server.getWorld(World.OVERWORLD);
+                        if (overWorld != null) {
+                            player.changeDimension(overWorld, new SimpleTeleporter(pos, false));
+                        }
+                    }
                     ServerWorld targetWorld;
                     boolean goingToCustom = worldIn.getDimensionKey() != ModDimensions.World1;
 
                     if (goingToCustom) {
                         targetWorld = server.getWorld(ModDimensions.World1);
                     } else {
+                        ServerWorld world1 = server.getWorld(ModDimensions.World1);
+                        if (world1 != null) {
+                            player.changeDimension(world1, new SimpleTeleporter(pos, true));
+                        }
                         targetWorld = server.getWorld(World.OVERWORLD);
                     }
 
