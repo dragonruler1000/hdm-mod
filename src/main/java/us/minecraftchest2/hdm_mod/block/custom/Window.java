@@ -77,6 +77,8 @@ public class Window extends HorizontalBlock {
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos,
                                              PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        player.sendMessage(new StringTextComponent("Block activated"), player.getUniqueID());
+
         if (!worldIn.isRemote()) {
             if (!player.isCrouching()) {
                 MinecraftServer server = worldIn.getServer();
