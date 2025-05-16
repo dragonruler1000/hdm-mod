@@ -5,7 +5,6 @@ package us.minecraftchest2.hdm_mod.block.custom;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.server.MinecraftServer;
@@ -41,7 +40,7 @@ public class Window extends HorizontalBlock {
     }
 
     // VoxelShapes define the physical shape of the block for each direction (NORTH, EAST, SOUTH, WEST)
-    // These shapes are made up of multiple cubic sections combined together
+    // These shapes are made up of multiple cubic sections combined
     private static final VoxelShape SHAPE_N = Stream.of(
             Block.makeCuboidShape(5, 11, 5, 6, 13, 11),  // Window frame pieces
             Block.makeCuboidShape(4, 0, 4, 12, 1, 12),   // Base
@@ -102,6 +101,10 @@ public class Window extends HorizontalBlock {
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos,
                                          PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        String message = "blockActivated";
+        ITextComponent msg = new StringTextComponent(message);
+        player.sendMessage(msg, player.getUniqueID());
+
         // Client-side: Only show a status message
         if (worldIn.isRemote()) {
             player.sendStatusMessage(new StringTextComponent("Client: Block activated!"), true);
