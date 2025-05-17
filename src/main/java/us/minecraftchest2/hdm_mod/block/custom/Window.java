@@ -98,36 +98,39 @@ public class Window extends HorizontalBlock {
      * @param hit Hit result information
      * @return Result of the interaction
      */
+    @SuppressWarnings("deprecation")
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos,
-                                         PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        String message = "blockActivated";
-        ITextComponent msg = new StringTextComponent(message);
-        player.sendMessage(msg, player.getUniqueID());
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
 
-        // Client-side: Only show a status message
         if (worldIn.isRemote()) {
             player.sendStatusMessage(new StringTextComponent("Client: Block activated!"), true);
             return ActionResultType.SUCCESS;
         }
 
-        // Server-side logic below
-        player.sendMessage(new StringTextComponent("blockActivated"), player.getUniqueID());
+        if (!worldIn.isRemote()) return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
+        if (player.isCrouching()) return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
 
-        // Prevent action if sneaking (crouching)
-        if (player.isCrouching()) {
-            return ActionResultType.PASS;
-        }
 
+        if (worldIn.getServer() == null) return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
         MinecraftServer server = worldIn.getServer();
-        if (server == null) {
-            return ActionResultType.FAIL;
+        if (worldIn.getDimensionKey() == ModDimensions.World1) {
+            ServerWorld overWorld = server.getWorld(World.OVERWORLD);
+            if (overWorld != null) {
+                player.changeDimension(overWorld, new SimpleTeleporter(pos, false));
+            }
         }
-
+        ServerWorld targetWorld;
         boolean goingToCustom = worldIn.getDimensionKey() != ModDimensions.World1;
-        ServerWorld targetWorld = goingToCustom
-            ? server.getWorld(ModDimensions.World1)
-            : server.getWorld(World.OVERWORLD);
+
+        if (goingToCustom) {
+            targetWorld = server.getWorld(ModDimensions.World1);
+        } else {
+            ServerWorld world1 = server.getWorld(ModDimensions.World1);
+            if (world1 != null) {
+                player.changeDimension(world1, new SimpleTeleporter(pos, true));
+            }
+            targetWorld = server.getWorld(World.OVERWORLD);
+        }
 
         if (targetWorld != null) {
             SimpleTeleporter teleporter = new SimpleTeleporter(pos, goingToCustom);
@@ -142,7 +145,7 @@ public class Window extends HorizontalBlock {
             return ActionResultType.SUCCESS;
         }
 
-        return ActionResultType.FAIL;
+        return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
     }
 
 
@@ -166,7 +169,7 @@ public class Window extends HorizontalBlock {
     }
 
     /**
-     * Adds the horizontal facing property to the block's state container
+     * Adds the horizontal-facing property to the block's state container
      */
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
