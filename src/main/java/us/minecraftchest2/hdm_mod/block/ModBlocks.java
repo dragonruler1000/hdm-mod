@@ -11,6 +11,7 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import us.minecraftchest2.hdm_mod.Hdm_mod;
+import us.minecraftchest2.hdm_mod.block.custom.Window;
 import us.minecraftchest2.hdm_mod.item.ModItems;
 import us.minecraftchest2.hdm_mod.item.ModItemGroup;
 
@@ -40,7 +41,7 @@ public class ModBlocks {
 
     // Registering a "portal" block called "window" with different properties
     public static final RegistryObject<Block> PORTAL_BLOCK = registerBlock("window",
-            () -> new Block(
+            () -> new Window(
                     AbstractBlock.Properties.create(Material.PORTAL)  // Base material is portal
                         .doesNotBlockMovement()                      // Entities can move through this block
                         .harvestLevel(10)                            // High harvest level
