@@ -102,10 +102,11 @@ public class Window extends HorizontalBlock {
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
 
-        if (worldIn.isRemote()) {
+        if (!worldIn.isRemote()) {
             player.sendStatusMessage(new StringTextComponent("Client: Block activated!"), true);
             return ActionResultType.SUCCESS;
         }
+        player.sendMessage(new StringTextComponent("blockActivated"), player.getUniqueID());
 
         if (!worldIn.isRemote()) return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
         if (player.isCrouching()) return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
