@@ -22,6 +22,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+//import us.minecraftchest2.hdm_mod.world.dimension.ModDimensions;
 import us.minecraftchest2.hdm_mod.world.dimension.ModDimensions;
 import us.minecraftchest2.hdm_mod.world.dimension.SimpleTeleporter;
 
@@ -101,7 +102,7 @@ public class Window extends HorizontalBlock {
     @SuppressWarnings("deprecation")
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        if (!worldIn.isRemote()) return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
+        if (worldIn.isRemote()) return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
         if (player.isCrouching()) return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
 
 
