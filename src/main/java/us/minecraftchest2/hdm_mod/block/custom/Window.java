@@ -17,12 +17,10 @@ import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-//import us.minecraftchest2.hdm_mod.world.dimension.ModDimensions;
 import us.minecraftchest2.hdm_mod.world.dimension.ModDimensions;
 import us.minecraftchest2.hdm_mod.world.dimension.SimpleTeleporter;
 
