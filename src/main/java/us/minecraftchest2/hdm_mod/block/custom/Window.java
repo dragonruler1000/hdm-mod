@@ -27,33 +27,34 @@ import us.minecraftchest2.hdm_mod.world.dimension.SimpleTeleporter;
 import javax.annotation.Nullable;
 import java.util.stream.Stream;
 
-
-
 /**
- * A custom window block that acts as a dimensional portal when activated
- * Extends HorizontalBlock to support directional placement
+ * Custom window block class, serving as a dimensional portal between worlds.
+ * Inherits directional placement capabilities from HorizontalBlock.
  */
 public class Window extends HorizontalBlock {
+    /**
+     * Constructor for Window block; forwards the properties to the parent constructor.
+     */
     public Window(Properties builder) {
         super(builder);
     }
 
-    // VoxelShapes define the physical shape of the block for each direction (NORTH, EAST, SOUTH, WEST)
-    // These shapes are made up of multiple cubic sections combined
+    // VoxelShapes for visually and physically shaping the block based on orientation.
+    // Each direction (N/E/S/W) has a custom composition of rectangular regions.
+
+    /** Shape for the block facing NORTH. */
     private static final VoxelShape SHAPE_N = Stream.of(
-            Block.makeCuboidShape(5, 11, 5, 6, 13, 11),  // Window frame pieces
-            Block.makeCuboidShape(4, 0, 4, 12, 1, 12),   // Base
-            Block.makeCuboidShape(5, 1, 5, 11, 2, 11),   // Lower frame
-            Block.makeCuboidShape(6, 2, 6, 10, 10, 10),  // Main window pane
-            Block.makeCuboidShape(5, 10, 4, 11, 11, 12), // Upper frame
-            Block.makeCuboidShape(5, 11, 4, 11, 12, 5),  // Top decorative elements
-            Block.makeCuboidShape(5, 11, 11, 11, 14, 12),
-            Block.makeCuboidShape(10, 11, 5, 11, 13, 11)
+            Block.makeCuboidShape(5, 11, 5, 6, 13, 11),  // Window frame elements (left, etc.)
+            Block.makeCuboidShape(4, 0, 4, 12, 1, 12),   // Base of window
+            Block.makeCuboidShape(5, 1, 5, 11, 2, 11),   // Lower window frame
+            Block.makeCuboidShape(6, 2, 6, 10, 10, 10),  // Glass pane
+            Block.makeCuboidShape(5, 10, 4, 11, 11, 12), // Top frame
+            Block.makeCuboidShape(5, 11, 4, 11, 12, 5),  // Decorative details
+            Block.makeCuboidShape(5, 11, 11, 11, 14, 12),// Upper right details
+            Block.makeCuboidShape(10, 11, 5, 11, 13, 11) // Right vertical side
     ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).get();
 
-    // Similar shape definitions for other directions...
-    // (SHAPE_E, SHAPE_S, SHAPE_W follow the same pattern but rotated)
-
+    /** Shape for the block facing EAST (rotated). */
     private static final VoxelShape SHAPE_E = Stream.of(
             Block.makeCuboidShape(5, 11, 5, 11, 13, 6),
             Block.makeCuboidShape(4, 0, 4, 12, 1, 12),
@@ -65,6 +66,7 @@ public class Window extends HorizontalBlock {
             Block.makeCuboidShape(5, 11, 10, 11, 13, 11)
     ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).get();
 
+    /** Shape for the block facing SOUTH. */
     private static final VoxelShape SHAPE_S = Stream.of(
             Block.makeCuboidShape(10, 11, 5, 11, 13, 11),
             Block.makeCuboidShape(4, 0, 4, 12, 1, 12),
@@ -76,6 +78,7 @@ public class Window extends HorizontalBlock {
             Block.makeCuboidShape(5, 11, 5, 6, 13, 11)
     ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).get();
 
+    /** Shape for the block facing WEST. */
     private static final VoxelShape SHAPE_W = Stream.of(
             Block.makeCuboidShape(5, 11, 10, 11, 13, 11),
             Block.makeCuboidShape(4, 0, 4, 12, 1, 12),
@@ -88,36 +91,45 @@ public class Window extends HorizontalBlock {
     ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).get();
 
     /**
-     * Handles player interaction with the window block
-     * @param state Current block state
-     * @param worldIn World instance
-     * @param pos Block position
-     * @param player Player who activated the block
-     * @param handIn Hand used for interaction
-     * @param hit Hit result information
-     * @return Result of the interaction
+     * Handles when a player right-clicks/interacts with this block.
+     * Triggers portal teleportation if conditions are met.
      */
     @SuppressWarnings("deprecation")
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType onBlockActivated(
+            BlockState state,
+            World worldIn,
+            BlockPos pos,
+            PlayerEntity player,
+            Hand handIn,
+            BlockRayTraceResult hit
+    ) {
+        // Only process on the server side, avoid duplicating logic on client
         if (worldIn.isRemote()) return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
+        // Do nothing if the player is crouching (commonly used for alternative interactions)
         if (player.isCrouching()) return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
 
-
+        // Get the server instance safely
         if (worldIn.getServer() == null) return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
         MinecraftServer server = worldIn.getServer();
+
+        // Check if in custom dimension; if so, teleport to Overworld
         if (worldIn.getDimensionKey() == ModDimensions.World1) {
             ServerWorld overWorld = server.getWorld(World.OVERWORLD);
             if (overWorld != null) {
                 player.changeDimension(overWorld, new SimpleTeleporter(pos, false));
             }
         }
+
+        // Set up for teleportation based on current dimension
         ServerWorld targetWorld;
         boolean goingToCustom = worldIn.getDimensionKey() != ModDimensions.World1;
 
         if (goingToCustom) {
+            // Teleporting from Overworld to custom dimension
             targetWorld = server.getWorld(ModDimensions.World1);
         } else {
+            // From custom dimension, teleport to Overworld
             ServerWorld world1 = server.getWorld(ModDimensions.World1);
             if (world1 != null) {
                 player.changeDimension(world1, new SimpleTeleporter(pos, true));
@@ -125,10 +137,12 @@ public class Window extends HorizontalBlock {
             targetWorld = server.getWorld(World.OVERWORLD);
         }
 
+        // Attempt teleport if a valid world was found
         if (targetWorld != null) {
             SimpleTeleporter teleporter = new SimpleTeleporter(pos, goingToCustom);
             player.changeDimension(targetWorld, teleporter);
 
+            // Notify the player about the result
             if (teleporter.wasSuccessful()) {
                 player.sendMessage(new StringTextComponent("Teleportation successful!"), player.getUniqueID());
             } else {
@@ -138,12 +152,13 @@ public class Window extends HorizontalBlock {
             return ActionResultType.SUCCESS;
         }
 
+        // Fall back to default processing if teleportation did not occur
         return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
     }
 
-
     /**
-     * Returns the appropriate shape for the block based on its facing direction
+     * Returns the block's physical outline for rendering and collision.
+     * The shape depends on the current facing direction of the block.
      */
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
@@ -162,7 +177,8 @@ public class Window extends HorizontalBlock {
     }
 
     /**
-     * Adds the horizontal-facing property to the block's state container
+     * Registers the horizontal facing property with the block state container,
+     * enabling the block to store which direction it is facing.
      */
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
@@ -170,7 +186,8 @@ public class Window extends HorizontalBlock {
     }
 
     /**
-     * Determines the block's facing direction when placed
+     * Determines the block's initial facing based on the placement context.
+     * The block will face opposite to the player's direction when placed.
      */
     @Nullable
     @Override
