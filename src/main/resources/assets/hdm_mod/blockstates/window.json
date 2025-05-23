@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "main": {"model":  "hdm_mod:block/window" }
+  }
+}
