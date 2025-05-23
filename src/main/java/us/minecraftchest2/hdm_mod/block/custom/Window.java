@@ -104,56 +104,35 @@ public class Window extends HorizontalBlock {
             Hand handIn,
             BlockRayTraceResult hit
     ) {
-        // Only process on the server side, avoid duplicating logic on client
-        if (worldIn.isRemote()) return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
-        // Do nothing if the player is crouching (commonly used for alternative interactions)
-        if (player.isCrouching()) return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
+  if (!worldIn.isRemote() && !player.isCrouching()) {
+      MinecraftServer server = worldIn.getServer();
+      if (server == null) return ActionResultType.PASS;
 
-        // Get the server instance safely
-        if (worldIn.getServer() == null) return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
-        MinecraftServer server = worldIn.getServer();
+      boolean goingToCustom = worldIn.getDimensionKey() != ModDimensions.World1;
 
-        // Check if in custom dimension; if so, teleport to Overworld
-        if (worldIn.getDimensionKey() == ModDimensions.World1) {
-            ServerWorld overWorld = server.getWorld(World.OVERWORLD);
-            if (overWorld != null) {
-                player.changeDimension(overWorld, new SimpleTeleporter(pos, false));
-            }
-        }
+      ServerWorld targetWorld = (worldIn.getDimensionKey() == ModDimensions.World1)
+              ? server.getWorld(World.OVERWORLD)
+              : server.getWorld(ModDimensions.World1);
 
-        // Set up for teleportation based on current dimension
-        ServerWorld targetWorld;
-        boolean goingToCustom = worldIn.getDimensionKey() != ModDimensions.World1;
+      if (worldIn.getDimensionKey() == ModDimensions.World1) {
+          ServerWorld overWorld = server.getWorld(World.OVERWORLD);
+          if (overWorld != null) {
+              player.changeDimension(overWorld, new SimpleTeleporter(pos, false));
+          }
+      }
 
-        if (goingToCustom) {
-            // Teleporting from Overworld to custom dimension
-            targetWorld = server.getWorld(ModDimensions.World1);
-        } else {
-            // From custom dimension, teleport to Overworld
-            ServerWorld world1 = server.getWorld(ModDimensions.World1);
-            if (world1 != null) {
-                player.changeDimension(world1, new SimpleTeleporter(pos, true));
-            }
-            targetWorld = server.getWorld(World.OVERWORLD);
-        }
+      if (targetWorld != null) {
+          SimpleTeleporter teleporter = new SimpleTeleporter(pos, goingToCustom);
+          player.changeDimension(targetWorld, teleporter);
+      }
 
-        // Attempt teleport if a valid world was found
-        if (targetWorld != null) {
-            SimpleTeleporter teleporter = new SimpleTeleporter(pos, goingToCustom);
-            player.changeDimension(targetWorld, teleporter);
+  System.out.println("[DEBUG] Portal activated on server!");
+  player.sendMessage(new StringTextComponent("Teleport logic running!"), player.getUniqueID());
+      player.sendMessage(new StringTextComponent("Teleport attempted!"), player.getUniqueID());
+      return ActionResultType.SUCCESS;
 
-            // Notify the player about the result
-            if (teleporter.wasSuccessful()) {
-                player.sendMessage(new StringTextComponent("Teleportation successful!"), player.getUniqueID());
-            } else {
-                player.sendMessage(new StringTextComponent("Teleportation failed: no safe location found."), player.getUniqueID());
-            }
-
-            return ActionResultType.SUCCESS;
-        }
-
-        // Fall back to default processing if teleportation did not occur
-        return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
+  }
+  return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
     }
 
     /**
