@@ -11,6 +11,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.IBooleanFunction;
@@ -125,10 +126,6 @@ public class Window extends HorizontalBlock {
           SimpleTeleporter teleporter = new SimpleTeleporter(pos, goingToCustom);
           player.changeDimension(targetWorld, teleporter);
       }
-
-  System.out.println("[DEBUG] Portal activated on server!");
-  player.sendMessage(new StringTextComponent("Teleport logic running!"), player.getUniqueID());
-      player.sendMessage(new StringTextComponent("Teleport attempted!"), player.getUniqueID());
       return ActionResultType.SUCCESS;
 
   }

@@ -5,8 +5,11 @@ package us.minecraftchest2.hdm_mod.world.dimension;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.ITeleporter;
 import us.minecraftchest2.hdm_mod.block.ModBlocks;
@@ -111,6 +114,30 @@ public class SimpleTeleporter implements ITeleporter {
             }
             if (doSetBlock) {
                 destinationWorld.setBlockState(destinationPos, ModBlocks.PORTAL_BLOCK.get().getDefaultState());
+            }
+        }
+
+        if (entity instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) entity;
+            ResourceLocation dimensionKey = destinationWorld.getDimensionKey().getLocation();
+            // Only send the welcome message if NOT the overworld
+            if (!dimensionKey.getPath().equals("overworld")) {
+                // (Same nice formatting as before)
+                String path = dimensionKey.getPath();
+                String dimensionName;
+                switch (path) {
+                    case "the_nether":
+                        dimensionName = "the Nether";
+                        break;
+                    case "the_end":
+                        dimensionName = "the End";
+                        break;
+                    default:
+                        dimensionName =  path.replace('_', ' ');
+                        dimensionName = dimensionName.substring(0, 1).toUpperCase() + dimensionName.substring(1);
+                        break;
+                }
+                player.sendMessage(new StringTextComponent("Welcome to " + dimensionName + "!"), player.getUniqueID());
             }
         }
 
