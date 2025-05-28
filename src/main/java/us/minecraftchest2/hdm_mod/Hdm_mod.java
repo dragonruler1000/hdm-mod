@@ -67,6 +67,10 @@ public class Hdm_mod {
         // some preinit code
         LOGGER.info("HELLO FROM PREINIT");
         LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
+
+        event.enqueueWork(() ->{
+            ModStructures.setupStructures();
+        });
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
