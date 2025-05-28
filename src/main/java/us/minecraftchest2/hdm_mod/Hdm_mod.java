@@ -22,6 +22,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import us.minecraftchest2.hdm_mod.block.ModBlocks;
 import us.minecraftchest2.hdm_mod.item.ModItems;
+import us.minecraftchest2.hdm_mod.world.structure.ModStructures;
 //import us.minecraftchest2.hdm_mod.init.ItemInit;
 
 import java.util.stream.Collectors;
@@ -40,6 +41,8 @@ public class Hdm_mod {
 
         ModItems.register(modEventBus1);
         ModBlocks.register(modEventBus1);
+
+        ModStructures.register(modEventBus1);
 
         modEventBus1.addListener(this::setup);
         // Register the enqueueIMC method for modloading
