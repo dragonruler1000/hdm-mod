@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#B",
+        "E "
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:porkchop"
+        },
+        "B": {
+            "item": "minecraft:brown_mushroom"
+        },
+        "E": {
+            "item": "minecraft:egg"
+        }
+    },
+    "result": {
+        "item": "hdm_mod:omelet",
+        "count": 1
+    },
+    "group": "omelets"
+}

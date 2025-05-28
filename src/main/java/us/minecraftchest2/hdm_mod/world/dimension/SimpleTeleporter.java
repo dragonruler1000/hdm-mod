@@ -132,6 +132,9 @@ public class SimpleTeleporter implements ITeleporter {
                     case "the_end":
                         dimensionName = "the End";
                         break;
+                    case "hdm_dimension":
+                        dimensionName = "HDM Dimension";
+                        break;
                     default:
                         dimensionName =  path.replace('_', ' ');
                         dimensionName = dimensionName.substring(0, 1).toUpperCase() + dimensionName.substring(1);
