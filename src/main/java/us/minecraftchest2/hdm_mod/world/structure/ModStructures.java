@@ -12,7 +12,7 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import us.minecraftchest2.hdm_mod.Hdm_mod;
-import us.minecraftchest2.hdm_mod.world.structure.structures.DustHouseStructure;
+import us.minecraftchest2.hdm_mod.world.structure.structures.HouseStructure;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +22,7 @@ public class ModStructures {
             DeferredRegister.create(ForgeRegistries.STRUCTURE_FEATURES, Hdm_mod.MOD_ID);
 
     public static final RegistryObject<Structure<NoFeatureConfig>> HOUSE =
-            STRUCTURES.register("house", DustHouseStructure::new);
+            STRUCTURES.register("house", HouseStructure::new);
 
     /* average distance apart in chunks between spawn attempts */
     /* minimum distance apart in chunks between spawn attempts. MUST BE LESS THAN ABOVE VALUE*/

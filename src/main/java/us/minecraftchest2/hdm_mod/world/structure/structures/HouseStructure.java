@@ -21,12 +21,12 @@ import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.feature.structure.StructureStart;
 import net.minecraft.world.gen.feature.structure.VillageConfig;
 import net.minecraft.world.gen.feature.template.TemplateManager;
+import us.minecraftchest2.hdm_mod.Hdm_mod;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
-import us.minecraftchest2.hdm_mod.Hdm_mod;
 
-public class DustHouseStructure extends Structure<NoFeatureConfig> {
-    public DustHouseStructure() {
+public class HouseStructure extends Structure<NoFeatureConfig> {
+    public HouseStructure() {
         super(NoFeatureConfig.CODEC);
     }
 
@@ -51,7 +51,7 @@ public class DustHouseStructure extends Structure<NoFeatureConfig> {
 
     @Override
     public IStartFactory<NoFeatureConfig> getStartFactory() {
-        return DustHouseStructure.Start::new;
+        return HouseStructure.Start::new;
     }
 
     public static class Start extends StructureStart<NoFeatureConfig> {

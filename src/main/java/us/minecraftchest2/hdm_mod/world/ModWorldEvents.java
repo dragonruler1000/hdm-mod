@@ -25,6 +25,8 @@ public class ModWorldEvents {
                         ObfuscationReflectionHelper.findMethod(ChunkGenerator.class, "func_230347_a_");
                 ResourceLocation cgRL = Registry.CHUNK_GENERATOR_CODEC.getKey(
                         (Codec<? extends ChunkGenerator>)GETCODEC_METHOD.invoke(serverWorld.getChunkProvider().generator));
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

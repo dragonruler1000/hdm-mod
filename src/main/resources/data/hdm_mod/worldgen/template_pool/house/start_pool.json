@@ -1,11 +1,11 @@
 {
-  "name": "tutorialmod:house/start_pool",
+  "name": "hdm_mod:house/start_pool",
   "fallback": "minecraft:empty",
   "elements": [
     {
       "weight": 1,
       "element": {
-        "location": "tutorialmod:house",
+        "location": "hdm_mod:house",
         "processors": "minecraft:empty",
         "projection": "rigid",
         "element_type": "minecraft:single_pool_element"
