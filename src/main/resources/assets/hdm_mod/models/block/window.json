@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures" : {
-    "all": "hdm_mod:block/grey"
+    "all": "hdm_mod:block/portalblock"
   }
 }

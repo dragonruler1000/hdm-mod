@@ -3,10 +3,12 @@
   "pools": [
     {
       "rolls": 1,
-      "entries":[
+      "entries": [
         {
           "type": "minecraft:item",
-          "name": "hdm_mod:dust"
+          "name": "hdm_mod:dust",
+          "weight": 4,
+          "quality": 9
         }
       ]
     }

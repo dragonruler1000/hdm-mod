@@ -2,6 +2,8 @@ package us.minecraftchest2.hdm_mod;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -20,6 +22,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import us.minecraftchest2.hdm_mod.block.ModBlocks;
 import us.minecraftchest2.hdm_mod.item.ModItems;
+import us.minecraftchest2.hdm_mod.world.structure.ModStructures;
 //import us.minecraftchest2.hdm_mod.init.ItemInit;
 
 import java.util.stream.Collectors;
@@ -38,6 +41,8 @@ public class Hdm_mod {
 
         ModItems.register(modEventBus1);
         ModBlocks.register(modEventBus1);
+
+        ModStructures.register(modEventBus1);
 
         modEventBus1.addListener(this::setup);
         // Register the enqueueIMC method for modloading
@@ -62,10 +67,16 @@ public class Hdm_mod {
         // some preinit code
         LOGGER.info("HELLO FROM PREINIT");
         LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
+
+        event.enqueueWork(() ->{
+            ModStructures.setupStructures();
+        });
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
         // do something that can only be done on the client
+        event.enqueueWork(() -> {
+        });
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
